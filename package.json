@@ -1,0 +1,11 @@
+{
+  "name": "MIS-course-work",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kosachemoto/MIS-course-work.git",
+  "author": "Nikita Kosachev <kosachev.a.nikita@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "run": "node index.js"
+  }
+}
