@@ -1,16 +1,5 @@
 'use strict';
 
-// Время возникновения отказа ( сек. )
-const REFUSAL_TIME = 300;
-// Погрешность времени возникновения отказа ( сек. )
-const REFUSAL_ERROR_TIME = 30;
-// Время восстановления MAIN_MACHINE ( сек. )
-const RECOVERY_TIME = 100;
-// Время включения резервного канала ( сек. )
-const POWER_ON_TIME = 5;
-// Периодичность сигнала о проверке ( сек. )
-const CHECK_SIGNAL_PERIOD = 30;
-
 class Channel {
   constructor() {
     this.incomingFlow = [];
@@ -19,8 +8,16 @@ class Channel {
     this.activity = [];
   }
 
+  AddApplication(application) {
+    this.incomingFlow.push(application);
+  }
+
   AddLifePeriod(lifePeriod) {
     this.activity.push(lifePeriod);
+  }
+
+  ApplicationsCount() {
+    return this.incomingFlow.length;
   }
   
   LastRefusalTime() {
@@ -41,7 +38,7 @@ class Channel {
 }
 
 // Common function
-function getMagicRand(time, timeError) {
+function GetMagicRand(time, timeError) {
   return time - timeError + Math.random() * timeError * 2;
 }
 
