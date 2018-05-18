@@ -16,7 +16,9 @@ class Handler {
 
     this.channels.forEach(function(channel, index) {
       channel.activity.forEach(function(lifePeriod) {
-       if (lifePeriod.startTime < appStart && appEnd < lifePeriod.refusalTime) {
+       if ( lifePeriod.startTime < appStart
+            && appEnd < lifePeriod.refusalTime 
+            && appEnd < CONST.FINAL_MODELING_TIME ) {
          _this.channels[index].AddApplication(application);
        }
       });

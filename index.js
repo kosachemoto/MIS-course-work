@@ -14,7 +14,6 @@ let handler = new Handler(CONST.CHANNELS_COUNT);
 
 function main() {
   handler = GetHandler(CONST.FINAL_MODELING_TIME);
-
   // console.log(application);
   // handler.AddApplication(application);
   globalIncomingFlow = GetIncomingFlow(CONST.INITIAL_MODELING_TIME, CONST.FINAL_MODELING_TIME);
@@ -46,13 +45,15 @@ function GetIncomingFlow(startTime, endTime) {
   let arrivalTime = startTime;
   let incomingFLow = [];
 
-  while (arrivalTime < endTime) {
-    arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
+  arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
 
+  do {  
     let application = new Application(arrivalTime, CONST.SERVICE_TIME);
-
+    
     incomingFLow.push(application);
-  }
+    
+    arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
+  } while (arrivalTime  < endTime)
 
   return incomingFLow;
 }
