@@ -1,50 +1,48 @@
 'use strict';
 
+// Время возникновения отказа ( сек. )
+const REFUSAL_TIME = 300;
+// Погрешность времени возникновения отказа ( сек. )
+const REFUSAL_ERROR_TIME = 30;
+// Время восстановления MAIN_MACHINE ( сек. )
+const RECOVERY_TIME = 100;
+// Время включения резервного канала ( сек. )
+const POWER_ON_TIME = 5;
+// Периодичность сигнала о проверке ( сек. )
+const CHECK_SIGNAL_PERIOD = 30;
+
 class Channel {
   constructor() {
     this.incomingFlow = [];
-    this.serviceEndTime = 0;
-    this.downtime = 0;
+
+    // Активность канала
+    this.activity = [];
   }
 
-  AddApplication(application) {
-    let waitingTime = this.serviceEndTime - application.arrivalTime;
-
-    if (waitingTime > 0) {
-      // Заявка ожидает, пока канал освободится
-      application.waitingTime = waitingTime;
-      application.serviceStartTime = this.serviceEndTime;
-    } else {
-      // Канал ожидает поступления заявки 
-      this.downtime += Math.abs(waitingTime);
-      application.serviceStartTime = this.serviceEndTime + Math.abs(waitingTime);
-    }
-
-    application.serviceEndTime = application.serviceStartTime + application.serviceTime;
-    this.serviceEndTime = application.serviceEndTime;
-
-    this.incomingFlow.push(application);
-  }
-
-GetWorkTime() {
-    return this.incomingFlow.reduce((timeInWork, currentApplication) => {
-      return timeInWork + currentApplication.serviceTime;
-    }, 0);
+  AddLifePeriod(lifePeriod) {
+    this.activity.push(lifePeriod);
   }
   
-  GetWaitingTime() {
-    return this.incomingFlow.reduce((timeInWaiting, currentApplication) => {
-      return timeInWaiting + currentApplication.waitingTime;
-    }, 0);
+  LastRefusalTime() {
+    if (this.activity.length == 0) {
+      return 0;
+    } else {
+      return this.activity[this.activity.length - 1].refusalTime;
+    }
   }
+  
+  LastRefusalDetectTime() {
+    if (this.activity.length == 0) {
+      return 0;
+    } else {
+      return this.activity[this.activity.length - 1].refusalDetectTime;
+    }
+  }
+}
 
-  GetServedApplicationsCount() {
-    return this.incomingFlow.length;
-  }
-
-  GetSystemSpendTime() {
-    return this.GetWorkTime() + this.GetWaitingTime();
-  }
+// Common function
+function getMagicRand(time, timeError) {
+  return time - timeError + Math.random() * timeError * 2;
 }
 
 module.exports = Channel;
