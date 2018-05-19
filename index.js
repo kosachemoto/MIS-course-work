@@ -14,13 +14,18 @@ let handler = new Handler(CONST.CHANNELS_COUNT);
 
 function main() {
   handler = GetHandler(CONST.FINAL_MODELING_TIME);
-  // console.log(application);
-  // handler.AddApplication(application);
-  globalIncomingFlow = GetIncomingFlow(CONST.INITIAL_MODELING_TIME, CONST.FINAL_MODELING_TIME);
+  // globalIncomingFlow = GetIncomingFlow(CONST.INITIAL_MODELING_TIME, CONST.FINAL_MODELING_TIME);
 
-  globalIncomingFlow.forEach(function(application) {
-    handler.AddApplication(application);
-  });
+  console.log('HANDLER:');
+  console.log('CHANNEL[0]');
+  console.log(handler.channels[0]);
+  console.log('CHANNEL[1]');
+  console.log(handler.channels[1]);
+  console.log('===');
+
+  // globalIncomingFlow.forEach(function(application) {
+  //   handler.AddApplication(application);
+  // });
 }
 
 main();
@@ -28,6 +33,15 @@ main();
 console.log('Applications count: ' + globalIncomingFlow.length);
 console.log('Last Application: ' + JSON.stringify(globalIncomingFlow[globalIncomingFlow.length - 1]));
 console.log('Handler applications count: ' + handler.ApplicationsCount());
+console.log('Average missed applications count: ' + MissedApplicationsCount(handler, globalIncomingFlow));
+
+//
+function MissedApplicationsCount(handler, incomingFLow) {
+  let incomingApplicationsCount = incomingFLow.length;
+  let servisedApplicationsCount = handler.ApplicationsCount();
+
+  return incomingApplicationsCount - servisedApplicationsCount;
+}
 
 // Генерируем handler
 function GetHandler(startTime, endTime) {

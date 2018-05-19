@@ -8,6 +8,17 @@ class Channel {
     this.activity = [];
   }
 
+  StateSlow(time) {
+    let state = true;
+
+    this.activity.forEach(function(lifePeriod) {
+      if ((lifePeriod.startTime < time) && (time < lifePeriod.refusalTime)) {
+        state = false;
+      }
+    }, 0);
+    return state;
+  }
+
   AddApplication(application) {
     this.incomingFlow.push(application);
   }

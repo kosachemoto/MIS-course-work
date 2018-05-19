@@ -29,11 +29,13 @@ class Handler {
     let lastRefusalDetectTime = CONST.POWER_ON_TIME + this.ReserveChannel().LastRefusalDetectTime();
     let refusalTime = this.GetRefusalTime(lastRefusalDetectTime);
     let refusalDetectTime = this.GetRefusalDetectTime(refusalTime);
+    let recoveryTime = refusalDetectTime + CONST.RECOVERY_TIME;
 
     let lifePeriod = new LifePediod(
       lastRefusalDetectTime, 
       refusalTime, 
-      refusalDetectTime
+      refusalDetectTime,
+      recoveryTime
     );
 
     this.ActiveChannel().AddLifePeriod(lifePeriod);
