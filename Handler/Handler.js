@@ -2,7 +2,7 @@
 
 const CONST = require('./../consants');
 const Channel = require('./../Channel/Channel');
-const LifePediod = require('./../LifePeriod/LifePeriod');
+const LifePeriod = require('./../LifePeriod/LifePeriod');
 
 class Handler {
   constructor(channelsCount) {
@@ -28,11 +28,19 @@ class Handler {
 
     this.channels.forEach(function(channel, index) {
       channel.activity.forEach(function(lifePeriod) {
-       if ( lifePeriod.startTime < appStart
+        // Обработка входящих заявок
+        if ( lifePeriod.startTime < appStart
             && appEnd < lifePeriod.refusalTime 
             && appEnd < CONST.FINAL_MODELING_TIME ) {
-         _this.channels[index].AddApplication(application);
-       }
+          _this.channels[index].AddApplication(application);
+        }
+        // Если не был получен управляющий сигнал
+        if ( lifePeriod.startTime < appStart 
+            && lifePeriod.refusalTime < appEnd 
+            && lifePeriod.refusalDetectTime > appEnd ) {
+          lifePeriod.refusalDetectTime = appEnd;
+        }
+
       });
     });
   }
@@ -43,7 +51,7 @@ class Handler {
     let refusalDetectTime = this.GetRefusalDetectTime(refusalTime);
     let recoveryTime = refusalDetectTime + CONST.RECOVERY_TIME;
 
-    let lifePeriod = new LifePediod(
+    let lifePeriod = new LifePeriod(
       lastRefusalDetectTime, 
       refusalTime, 
       refusalDetectTime,
