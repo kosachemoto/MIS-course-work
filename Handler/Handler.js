@@ -9,6 +9,18 @@ class Handler {
     this.channels = Array(channelsCount).fill().map( () => new Channel() );
   }
 
+  TotalSlowTime() {
+    return this.channels.reduce(function(totalSlowTime, channel) {
+      return totalSlowTime + channel.TotalSlowTime();
+    }, 0);
+  }
+
+  InSlow(time) { 
+    return this.channels.some(function(channel) {
+      return channel.InRecovery(time);
+    });
+  }
+
   AddApplication(application) {
     let _this = this;
     let appStart = application.arrivalTime;

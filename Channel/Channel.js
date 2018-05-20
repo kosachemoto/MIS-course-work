@@ -8,14 +8,33 @@ class Channel {
     this.activity = [];
   }
 
-  StateSlow(time) {
-    let state = true;
+  TotalSlowTime() {
+    return this.activity.reduce(function(totalSlowTime, lifePeriod) {
+      return totalSlowTime + lifePeriod.recoveryTime - lifePeriod.refusalDetectTime;
+    }, 0);
+  }
+
+  InWork(time) {
+    let state = false;
 
     this.activity.forEach(function(lifePeriod) {
       if ((lifePeriod.startTime < time) && (time < lifePeriod.refusalTime)) {
-        state = false;
+        state = true;
       }
     }, 0);
+
+    return state;
+  }
+
+  InRecovery(time) {
+    let state = false;
+
+    this.activity.forEach(function(lifePeriod) {
+      if ((lifePeriod.refusalTime < time) && (time < lifePeriod.recoveryTime)) {
+        state = true;
+      }
+    });
+
     return state;
   }
 
