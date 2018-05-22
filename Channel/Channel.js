@@ -50,10 +50,6 @@ class Channel {
     return this.incomingFlow.length;
   }
 
-  LastApplication() {
-    return this.incomingFlow[this.incomingFlow.length - 1];
-  }
-
   LastRefusalTime() {
     if (this.activity.length == 0) {
       return 0;

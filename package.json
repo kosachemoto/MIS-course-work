@@ -6,6 +6,7 @@
   "author": "Nikita Kosachev <kosachev.a.nikita@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "run": "node index.js"
+    "run": "node index.js",
+    "test": "node test.js"
   }
 }

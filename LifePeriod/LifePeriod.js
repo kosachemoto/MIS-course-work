@@ -7,10 +7,6 @@ class LifePeriod {
     this.refusalDetectTime = refusalDetectTime;
     this.recoveryTime = recoveryTime;
   }
-
-  GetUptime() {
-    return this.refusalTime - this.startTime;
-  }
 }
 
 module.exports = LifePeriod;

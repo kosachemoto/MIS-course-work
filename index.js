@@ -35,11 +35,11 @@ function main() {
 
 main();
 
-console.log('Applications count: ' + globalIncomingFlow.length);
-console.log('Last Application: ' + JSON.stringify(globalIncomingFlow[globalIncomingFlow.length - 1]));
-console.log('Handler applications count: ' + handler.ApplicationsCount());
-console.log('Average missed applications count: ' + MissedApplicationsCount(handler, globalIncomingFlow));
-console.log('Total slow time: ' + handler.TotalSlowTime());
+console.log('> Applications count: ' + globalIncomingFlow.length);
+console.log('> Last Application: ' + JSON.stringify(globalIncomingFlow[globalIncomingFlow.length - 1]));
+console.log('> Handler applications count: ' + handler.ApplicationsCount());
+console.log('> Average missed applications count: ' + MissedApplicationsCount(handler, globalIncomingFlow));
+console.log('> Average slow time: ' + handler.TotalSlowTime());
 
 // Количество отклонённых заявок
 function MissedApplicationsCount(handler, incomingFLow) {
