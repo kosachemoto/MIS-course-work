@@ -14,6 +14,23 @@ class Channel {
     }, 0);
   }
 
+  WorkTime() {
+    return this.incomingFlow.reduce(function(workTime, application) {
+      return workTime + application.serviceTime;
+    }, 0);
+  }
+
+  ServiceEndTime() {
+    let lastApplicationIndex = this.incomingFlow.length - 1;
+    let lastApplication = this.incomingFlow[lastApplicationIndex];
+    
+    if (lastApplication === undefined) {
+      return 'UNDEFINED => ServiceEndTime()'
+    } else {
+      return lastApplication.arrivalTime + lastApplication.serviceTime;
+    }
+  }
+
   InWork(time) {
     let state = false;
 
@@ -63,6 +80,14 @@ class Channel {
       return 0;
     } else {
       return this.activity[this.activity.length - 1].refusalDetectTime;
+    }
+  }
+
+  LastRecoveryTime() {
+    if (this.activity.length == 0) {
+      return 0;
+    } else {
+      return this.activity[this.activity.length - 1].recoveryTime;
     }
   }
 }

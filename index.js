@@ -21,25 +21,33 @@ function main() {
   do { 
     let application = new Application(arrivalTime, CONST.SERVICE_TIME);
     
-    globalIncomingFlow.push(application);
+    if (application.arrivalTime + application.serviceTime < CONST.FINAL_MODELING_TIME) {
+      globalIncomingFlow.push(application);
+    } else {
+    }
     handler.AddApplication(application);
     
-    if (handler.InSlow(arrivalTime)) {
-      arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME * 2, CONST.ARRIVAL_ERROR_TIME * 2);
-    } else {
-      arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
-    }
+    arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
+
+    // if (handler.InSlow(arrivalTime)) {
+    //   arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME * 2, CONST.ARRIVAL_ERROR_TIME * 2);
+    // } else {
+    //   arrivalTime += GetMagicRand(CONST.ARRIVAL_TIME, CONST.ARRIVAL_ERROR_TIME);
+    // }
 
   } while (arrivalTime  < CONST.FINAL_MODELING_TIME)
 }
 
 main();
-
 console.log('> Applications count: ' + globalIncomingFlow.length);
-console.log('> Last Application: ' + JSON.stringify(globalIncomingFlow[globalIncomingFlow.length - 1]));
-console.log('> Handler applications count: ' + handler.ApplicationsCount());
-console.log('> Average missed applications count: ' + MissedApplicationsCount(handler, globalIncomingFlow));
-console.log('> Average slow time: ' + handler.TotalSlowTime());
+console.log('> Handling applications count: ' + handler.ApplicationsCount());
+console.log('> Missed applications count: ' + MissedApplicationsCount(handler, globalIncomingFlow) + '\n');
+
+console.log('> Work time: ' + handler.WorkTime());
+console.log('> Service end time: ' + handler.ServiceEndTime() + '\n');
+
+// console.log('> Average slow time: ' + handler.TotalSlowTime());
+console.log('> Use rate: ' + handler.UseRate());
 
 // Количество отклонённых заявок
 function MissedApplicationsCount(handler, incomingFLow) {
